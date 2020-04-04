@@ -1,0 +1,15 @@
+$default-font: 'Montserrat', sans-serif;
+$accent: #FFE667;
+$gradient-blue: linear-gradient(270deg, #355AA3 0%, #5C89E0 71.87%);
+$black: #242021;
+$blue: #365ba4;
+$text: #81909F;
+$gray: #f3f4fa;
+
+// Customization Bootstrap vars from "app/libs/bootstrap/scss/_variables.scss"
+$grid-gutter-width: 30px;
+$grid-columns: 12;
+$grid-breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1280px);
+$container-max-widths: (sm: 540px, md: 720px, lg: 960px, xl: 1280px);
+
+$gutter: $grid-gutter-width;

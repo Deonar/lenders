@@ -1,0 +1,84 @@
+/*!
+Theme Name: Lenders
+Description: Подбери лучшее кредитное предложение на рынке!
+Version: 1.0.0
+License URI: LICENSE
+Text Domain: 
+*/
+.offer .card-rating-icon span{
+	width: 30px;
+    height: 30px;
+}
+
+.offer .offer-card__logo{
+	max-width: 100px;	
+}
+
+.show-more{
+	cursor: pointer;
+}
+@media (max-width: 575.98px){
+	.banner__img_mob {
+		right: -40px;
+	}
+	.banner-question .banner__img_mob {
+		right: -20px;
+	}
+}
+.scrollbar{
+	height: auto;
+}
+.scrollbar>.scroll-element.scroll-y{
+	z-index: 100;
+}
+
+.form-input:hover .ajax-search__list{
+	display: block;
+}
+.form-input.done:after {
+	top: 33px;
+}
+.ajax-search__list{
+	overflow: auto;
+}
+.ajax-search__list .selectCity__item{
+	padding-left: 27px;
+}
+
+.datepicker{
+	margin-top: -100px;
+}
+
+/* Search */
+.search-form{
+	border: none;
+}
+.search-form .scroll-wrapper{
+	top: 52px;
+}
+
+.banner-question{
+	overflow: visible;
+}
+
+@media (max-width: 991.98px){
+	.datepicker{
+		margin-top: -60px;
+	}
+}
+
+.cards__img img{
+	margin-left: auto;
+}
+@media (max-width: 400px){
+	.cards-select{
+		justify-content: space-between;
+	}
+	.cards-select__item{
+		margin: 0;
+	}
+}
+
+.page{
+	text-align: justify;
+}

@@ -1,0 +1,22 @@
+body{
+	margin: 0;
+	padding: 0;
+}
+.block{
+	width: 600px;
+	height: 600px;
+	background: #d9c8c8;
+	overflow: hidden;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+.block__item{
+	width: 30px;
+	height: 30px;
+	background: #000;
+
+	margin: 5px;
+}   
