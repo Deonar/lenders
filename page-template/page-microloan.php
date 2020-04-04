@@ -393,6 +393,7 @@ get_header();
     </div>
     
     <form action="#" class="steps-form__wrapper" id="steps-form_1">
+      <input type="hidden" name="login_nonce" value="<?= wp_create_nonce('submitOrder'); ?>"/>
       <p class="text-center">
         <b>+16%</b> за заполнение поля <b>ФИО</b>
       </p>

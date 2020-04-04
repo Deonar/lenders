@@ -407,54 +407,49 @@ $(function() {
     }
   });
 
-  $('#steps-form_3').on('submit', function(e){
-    e.preventDefault();
-    if ($('#steps-form_3 .error').length || $('#steps-form_3 .validate').length) {
-      $('#steps-form_3 .validate').addClass('error');
-    } else {
-      window.location.hash = 'thank';
+    $('#steps-form_3').on('submit', function (e) {
+        e.preventDefault();
+        if ($('#steps-form_3 .error').length || $('#steps-form_3 .validate').length) {
+            $('#steps-form_3 .validate').addClass('error');
+        } else {
+            window.location.hash = 'thank';
 
+            localStorage.setItem('address-data', JSON.stringify($('#steps-form_3').serializeArray()));
 
-      localStorage.setItem('address-data', JSON.stringify($('#steps-form_3').serializeArray())); 
-      
- 
-      let mainArray = [...[{'name':'client-phone', 'value':localStorage.getItem('client-phone')}], ...JSON.parse(localStorage.getItem('basic-data')), ...JSON.parse(localStorage.getItem('passport-data')), ...JSON.parse(localStorage.getItem('address-data'))];
+            let mainArray = [
+                ...[{'name': 'client-phone', 'value': localStorage.getItem('client-phone')}],
+                ...JSON.parse(localStorage.getItem('basic-data')),
+                ...JSON.parse(localStorage.getItem('passport-data')),
+                ...JSON.parse(localStorage.getItem('address-data'))];
 
-      let mainObj = {};
-      mainArray.forEach((item)=>{
-        mainObj[item.name] = item.value;
-      });
-    
-      let mainObj2 = {
-        'name':  'name',
-        'lastName': 'LastName'
-        };
-      $.ajax({
-            url: ajax_obj.ajaxurl,
-            // data: 'action=submitOrder&mainObj=' + JSON.stringify(mainObj2),
-            //data: 'action=submitOrder&mainObj=' + JSON.stringify(mainObj2),
-            type: 'post', 
-            success: function(data){
-               console.log(data);
-            }
+            let mainObj = {};
+            mainArray.forEach((item) => {
+                mainObj[item.name] = item.value;
+            });
 
-       })
+            //add wp action to obj
+            mainObj.action  = 'submitOrder';
+            //add csrf token to obj
+            mainObj.security = $('input[name="login_nonce"]').val();
 
-      // var data = {
-      //   'action': 'submitOrder',
-      //   'post_type': 'json',
-      //   'mainObj': mainObj
-      // };
+            $.ajax({
+                url: ajax_obj.ajaxurl,
+                data: mainObj,
+                type: 'post',
+                success: (data) => {
+                    console.log(data);
+                },
+                error: (err) => {
+                    console.log(err);
+                }
 
-      // jQuery.post("", data, function(response) {
-      //   console.log( response );
-      // }, 'json');
+            });
 
-      $('#forms-wrapper').hide();
-      $('#best-offers').show();
-      $('html, body').animate({scrollTop: $('#best-offers').offset().top}, 0);
-    }
-  });
+            $('#forms-wrapper').hide();
+            $('#best-offers').show();
+            $('html, body').animate({scrollTop: $('#best-offers').offset().top}, 0);
+        }
+    });
 
 
   // Желаемый кредитный лимит *

@@ -300,11 +300,22 @@ add_action('wp_ajax_submitOrder', 'submitOrder');
 add_action('wp_ajax_nopriv_submitOrder', 'submitOrder');
 
 function submitOrder()
-{   
+{
 
-    // jsonDecode($_POST["mainObj"], true);
+    if (!wp_verify_nonce($_POST['security'], 'submitOrder')){
+        wp_die();
+    }
 
-    var_dump(unserialize($_POST["mainObj"]));
+    $excludeExtraFields = ['action'];
+    $requestData = $_POST;
+    foreach ($requestData as $key => $value){
+        if (!in_array($key, $excludeExtraFields)){
+            $replaceWrongCodeStyle = str_replace('-', '_', $key);
+        };
+    }
+
+
+//    var_dump($_POST['client-phone']);
 
 
     // $dqew = json_decode($_POST['mainObj'], true);
