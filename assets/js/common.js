@@ -432,7 +432,7 @@ $(function() {
       $.ajax({
             url: ajax_obj.ajaxurl,
             // data: 'action=submitOrder&mainObj=' + JSON.stringify(mainObj2),
-            data: 'action=submitOrder&mainObj=' + JSON.stringify(mainObj2),
+            //data: 'action=submitOrder&mainObj=' + JSON.stringify(mainObj2),
             type: 'post', 
             success: function(data){
                console.log(data);
