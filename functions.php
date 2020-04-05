@@ -299,68 +299,235 @@ function jsonDecode($json, $assoc = false)
 add_action('wp_ajax_submitOrder', 'submitOrder');
 add_action('wp_ajax_nopriv_submitOrder', 'submitOrder');
 
+
+
 function submitOrder()
 {
+    $type = $_POST['type'];
 
-    if (!wp_verify_nonce($_POST['security'], 'submitOrder')){
-        wp_die();
+    $forms = ['type1', 'type2', 'type3','type4'];
+
+    switch ($type){
+        case $forms[0]:
+            type1($_POST);
+            break;
+        case $forms[1]:
+            type2($_POST);
+            break;
+        case $forms[2]:
+            type3($_POST);
+            break;
+        case $forms[3]:
+            type4($_POST);
+            break;
+
     }
 
-    $excludeExtraFields = ['action'];
-    $requestData = $_POST;
-    foreach ($requestData as $key => $value){
-        if (!in_array($key, $excludeExtraFields)){
-            $replaceWrongCodeStyle = str_replace('-', '_', $key);
-        };
+//    if (!wp_verify_nonce($_POST['security'], 'submitOrder')) {
+//        wp_die();
+//    }
+
+}
+//same required fields
+function sameKeysDictionaryPart1()
+{
+    //the same part for every credit
+    return [
+        'pasport-number' => 'Серия и номер *',
+        'birthday' => 'Дата рождения*',
+        'birthday-city' => 'Место рождения *',
+        'department-code' => 'Код подразделения *',
+        'pasport-issue' => 'Дата выдачи *',
+        'pasport-subdivision' => 'Кем выдан *',
+
+
+        'addressIndex' => 'Индекс *',
+        'addressRegion' => 'Регион *',
+        'addressCity' => 'Район или город *',
+        'addressStreet' => 'Улица *',
+        'addressHouse' => 'Дом *',
+        'addressCorps' => 'Корпус',
+        'addressBuilding' => 'Строение',
+        'addressApartment' => 'Квартира',
+    ];
+}
+
+//same not required fields
+function sameKeysDictionaryPart2()
+{
+    //same part for every credit but it is not required
+    return [
+        'addressIndex2' => 'Индекс2 *',
+        'addressRegion2' => 'Регион2 *',
+        'addressCity2' => 'Район или город2 *',
+        'addressStreet2' => 'Улица2 *',
+        'addressHouse2' => 'Дом2 *',
+        'addressCorps2' => 'Корпус2',
+        'addressBuilding2' => 'Строение2',
+        'addressApartment2' => 'Квартира2',
+    ];
+}
+
+function sameKeysDictionaryPart4()
+{
+    return [
+        'addressIndex2' => 'Индекс2 *',
+        'addressRegion2' => 'Регион2 *',
+        'addressCity2' => 'Район или город2 *',
+        'addressStreet2' => 'Улица2 *',
+        'addressHouse2' => 'Дом2 *',
+        'addressCorps2' => 'Корпус2',
+        'addressBuilding2' => 'Строение2',
+        'addressApartment2' => 'Квартира2',
+    ];
+}
+
+function type1($data)
+{
+    echo 'microzaimu!!!!!!!!!!!!!!';
+    echo "<br>";
+
+    $distinctKeysDictionary = [
+        'client-name' => 'Фамилия, имя, отчество *',
+        'client-email' => 'Электронная почта *',
+        'select-microloan' => 'Для чего вам нужен микрозайм *',
+        'credit-limit' => 'Желаемый кредитный лимит *',
+        'credit-term' => 'Желаемый срок кредита *',
+    ];
+
+    $content = 'Телефон: ' . $data['client-phone'] . '; ';
+    $content = $content . formStringData($distinctKeysDictionary, $data);
+    $content = $content . formStringData(sameKeysDictionaryPart1(), $data);
+
+    if ($data['addressIndex2'] !== '' && $data['addressIndex2'] !== null){
+        $content = $content . formStringData(sameKeysDictionaryPart2(), $data);
     }
 
+    if ($content !== ''){
+        insertIntoSql($data['client-phone'], $content);
+    }
 
-//    var_dump($_POST['client-phone']);
+}
 
+/**
+ * @param $data - post form data
+ */
+function type2($data){
+    echo 'credit cards!!!!!!!!!!!!!!!' ;
+    echo "<br>";
 
-    // $dqew = json_decode($_POST['mainObj'], true);
-   
-    // echo 'test';
-    // var_dump($_POST['mainObj']);
-    // echo "string1";
-    // var_dump(json_decode($_POST['mainObj'], true));
-    // echo "string2";
+    $distinctKeysDictionary = [
+        'card-credit-limit' => 'Какой кредитный лимит вам нужен?',
+        'loan-purpose' => 'Цель кредита',
+        'client-name' => 'Фамилия, имя, отчество *',
+        'client-email' => 'Электронная почта *',
+    ];
 
-    // if(wp_verify_nonce( $_POST['checkField'], 'orderCreate')) {
+    $content = 'Телефон: ' . $data['client-phone'] . '; ';
 
+    $content = $content . formStringData($distinctKeysDictionary, $data);
+    $content = $content . formStringData(sameKeysDictionaryPart1(), $data);
 
-    //     // Создаем массив
-    //     $post_data = array(
-    //         'post_title'    => "Заявка - " . $addressIndex,
-    //         'post_type'     => 'orders',
-    //         'post_content'  => '',
-    //         'post_status'   => 'publish',
-    //         'post_author'   => 1,
-    //     );
-        
-    //     // Вставляем данные в БД
-    //     $post_id = wp_insert_post(wp_slash($post_data));
+    if ($data['addressIndex2'] !== '' && $_POST['addressIndex2'] !== null){
+        $content = $content . formStringData(sameKeysDictionaryPart2(), $data);
+    }
+    echo $content;
+    if ($content !== ''){
+        echo 'READY TO INSERT';
+        insertIntoSql($data['client-phone'], $content);
+    }
+}
+/**
+ * @param $data - post form data
+ */
 
-    //     if( is_wp_error($post_id) ){
-    //         echo $post_id->get_error_message();
-    //     }
-    //     else {
+function type3($data){
+    echo 'debit cards!!!!!!!!!!!!!!!' ;
+    echo "<br>";
 
-    //         $is_updated_field = update_field('order-sum', $addressIndex, $post_id);
+    $distinctKeysDictionary = [
+        'spend-term' => 'Сколько тратите в месяц?',
+        'select-currency' => 'Currency',
+        'client-name' => 'Фамилия, имя, отчество *',
+        'client-email' => 'Электронная почта *',
+    ];
 
-    //         if($is_updated_field) {
-    //             echo "Заявка принята. Значения полей сохранены.";
-    //         }
-    //         else {
-    //             echo "Заявка принята. Значения полей НЕ сохранены :(";
-    //         }
+    $content = 'Телефон: ' . $data['client-phone'] . '; ';
 
-            
-    //     }
-    // }
-    // else {
-    //     die('Проверка не пройдена.');
-    // }
+    $content = $content . formStringData($distinctKeysDictionary, $data);
+    $content = $content . formStringData(sameKeysDictionaryPart1(), $data);
 
-    // die();
+    if ($data['addressIndex2'] !== '' && $data['addressIndex2'] !== null){
+        $content = $content . formStringData(sameKeysDictionaryPart2(), $data);
+    }
+
+    echo  $content;
+    if ($content !== ''){
+        echo 'READY TO INSERT';
+        insertIntoSql($data['client-phone'], $content);
+    }
+}
+
+/**
+ * @param $data - post form data
+ */
+function type4($data){
+    echo 'credit rating!!!!!!!!!!!!!!!' ;
+    echo "<br>";
+
+    $distinctKeysDictionary = [
+        'client-name' => 'Фамилия, имя, отчество *',
+        'client-email' => 'Электронная почта *',
+    ];
+
+    $content = 'Телефон: ' . $data['client-phone'] . '; ';
+
+    $content = $content . formStringData($distinctKeysDictionary, $data);
+    $content = $content . formStringData(sameKeysDictionaryPart1(), $data);
+
+    if ($data['addressIndex2'] !== '' && $data['addressIndex2'] !== null){
+        $content = $content . formStringData(sameKeysDictionaryPart2(), $data);
+    }
+
+    echo  $content;
+    if ($content !== ''){
+        echo 'READY TO INSERT';
+        insertIntoSql($data['client-phone'], $content);
+    }
+}
+
+/**
+ * @param $phone - phone number
+ * @param $contentString - rest data
+ */
+function insertIntoSql($phone, $contentString){
+    $post_data = array(
+        'post_title'    => "Заявка - " . $phone,
+        'post_type'     => 'orders',
+        'post_content'  => $contentString,
+        'post_status'   => 'publish',
+        'post_author'   => 1,
+    );
+
+    // Вставляем данные в БД
+    $post_id = wp_insert_post(wp_slash($post_data));
+
+    if( is_wp_error($post_id) ){
+        echo $post_id->get_error_message();
+    } else {
+
+    }
+}
+
+function formStringData($keys, $dataObj)
+{
+    $string = '';
+    foreach ($keys as $key => $value) {
+        if (array_key_exists( $key, $dataObj)) {
+            if ($dataObj[$key] !== '' && $dataObj[$key] !== null) {
+                $string = $string . ' ' . $value . ': ' . $dataObj[$key] . ';   ';
+            }
+        }
+    }
+    return $string;
 }
